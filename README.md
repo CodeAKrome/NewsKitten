@@ -1,3 +1,5 @@
+![Cat shred](https://github.com/user-attachments/assets/36ea343e-1734-44c3-9d56-d9d932526cf9)
+
 # Vibe coding process
 1. Create a prompt to create a prompt. E.g. Create a prompt for an LLM that instructs it to do this ...
 Prompt LLMs on [LM Arena](https://lmarena.ai/) in side by side battle mode to create a prompt that will do what I want.
