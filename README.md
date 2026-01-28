@@ -86,3 +86,7 @@ def format_results(
 
 and that's it, Folks!
 We now return you to your regularly scheduled repo ...
+
+But no, for some reason it worked on my machine, but, like a good little geek I ran thru the install and found another error.
+The chroma db collection was trying to get deleted and throwing a value error so added notfound error.
+

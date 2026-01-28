@@ -1,7 +1,3 @@
-"""
-ChromaDB operations for storing and querying article embeddings.
-"""
-
 import logging
 from typing import List, Dict, Any
 import pandas as pd
@@ -9,6 +5,7 @@ import numpy as np
 import chromadb
 from chromadb.config import Settings
 from chromadb.utils import embedding_functions
+from chromadb.errors import NotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +35,7 @@ def initialize_chroma(
         try:
             client.delete_collection(name=collection_name)
             logger.info(f"Deleted existing collection: {collection_name}")
-        except ValueError:
+        except NotFoundError:  # Fix: Catch the correct exception type
             pass  # Collection doesn't exist
         
         # Create new collection with cosine similarity
