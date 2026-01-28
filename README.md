@@ -1,5 +1,4 @@
-# Preface
-## Vibe coding process
+# Vibe coding process
 1. Create a prompt to create a prompt. E.g. Create a prompt for an LLM that instructs it to do this ...
 Prompt LLMs on [LM Arena](https://lmarena.ai/) in side by side battle mode to create a prompt that will do what I want.
 In this case it was ![claude-opus-4-5-20251101-thinking-32k prompt](promptprompt.txt).
