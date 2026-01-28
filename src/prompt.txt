@@ -1,0 +1,178 @@
+# Prompt for LLM: News Article Categorization Program Using ChromaDB
+
+---
+
+## Task Overview
+
+Design a Python program that reads news article data from a tab-delimited file, generates embeddings for article titles, stores them in ChromaDB, and automatically groups articles into semantic categories using vector similarity.
+
+---
+
+## Input Specification
+
+**File Format:**
+- Tab-delimited text file (`.tsv`)
+- Two columns: `article_id` (string/integer) and `title` (string)
+- First row is a header row
+- UTF-8 encoding
+
+**Example Input (`articles.tsv`):**
+```
+article_id	title
+1001	Stock Market Reaches All-Time High Amid Economic Optimism
+1002	Local Football Team Wins Championship After Dramatic Overtime
+1003	New Study Links Exercise to Improved Mental Health
+1004	Tech Giants Report Record Quarterly Earnings
+1005	Scientists Discover New Species in Amazon Rainforest
+```
+
+---
+
+## Technical Requirements
+
+### 1. Dependencies
+Use the following libraries:
+- `chromadb` for vector storage and similarity search
+- `sentence-transformers` with the model `all-MiniLM-L6-v2` for generating embeddings
+- `pandas` for file parsing
+- `numpy` for numerical operations
+
+### 2. ChromaDB Configuration
+- Create a persistent ChromaDB client storing data in a `./chroma_db` directory
+- Create a collection named `news_articles`
+- Use cosine similarity as the distance metric
+- Store `article_id` and `title` as metadata for each document
+
+### 3. Categorization Algorithm
+Implement the following approach:
+1. Generate embeddings for all article titles
+2. Use a clustering method to group similar articles:
+   - Option A: Implement DBSCAN clustering on the embeddings with `eps=0.3` and `min_samples=2`
+   - Option B: Use ChromaDB's query functionality to find articles within a similarity threshold of 0.75
+3. Assign category labels based on the most common keywords in each cluster or generate a descriptive label using the centroid article
+
+### 4. Output Specification
+Generate two outputs:
+
+**Console Output:**
+```
+Category 1: "Business/Finance" (2 articles)
+  - 1001: Stock Market Reaches All-Time High Amid Economic Optimism
+  - 1004: Tech Giants Report Record Quarterly Earnings
+
+Category 2: "Sports" (1 article)
+  - 1002: Local Football Team Wins Championship After Dramatic Overtime
+...
+```
+
+**JSON Output File (`categories.json`):**
+```json
+{
+  "categories": [
+    {
+      "category_id": 1,
+      "category_name": "Business/Finance",
+      "article_count": 2,
+      "articles": [
+        {"article_id": "1001", "title": "Stock Market Reaches..."},
+        {"article_id": "1004", "title": "Tech Giants Report..."}
+      ]
+    }
+  ],
+  "uncategorized": []
+}
+```
+
+---
+
+## Program Structure
+
+Create the following components:
+
+```
+project/
+├── main.py                 # Entry point with CLI arguments
+├── embeddings.py           # Embedding generation functions
+├── chroma_manager.py       # ChromaDB operations (add, query, delete)
+├── categorizer.py          # Clustering and category assignment logic
+├── file_handler.py         # TSV parsing and JSON output
+└── config.py               # Configuration constants
+```
+
+### Required Functions
+
+1. **`load_articles(filepath: str) -> pd.DataFrame`**
+   - Parse the TSV file and return a DataFrame
+   - Validate that required columns exist
+   - Handle missing or malformed data gracefully
+
+2. **`generate_embeddings(titles: List[str]) -> np.ndarray`**
+   - Generate embeddings using sentence-transformers
+   - Return normalized embedding vectors
+
+3. **`initialize_chroma(collection_name: str, persist_dir: str) -> Collection`**
+   - Create or load existing ChromaDB collection
+   - Configure with appropriate settings
+
+4. **`add_articles_to_chroma(collection, articles: pd.DataFrame, embeddings: np.ndarray)`**
+   - Batch insert articles with their embeddings
+   - Use article_id as the document ID
+
+5. **`cluster_articles(embeddings: np.ndarray, method: str = "dbscan") -> List[int]`**
+   - Perform clustering and return cluster labels
+   - Handle outliers (assign to -1 cluster)
+
+6. **`generate_category_names(clusters: Dict[int, List[str]]) -> Dict[int, str]`**
+   - Create human-readable category names from article titles in each cluster
+   - Use keyword extraction or simple heuristics
+
+7. **`export_results(categories: Dict, output_path: str)`**
+   - Write formatted JSON output
+
+---
+
+## CLI Interface
+
+```bash
+python main.py --input articles.tsv --output categories.json --min-cluster-size 2 --similarity-threshold 0.75
+```
+
+**Arguments:**
+- `--input`: Path to input TSV file (required)
+- `--output`: Path to output JSON file (default: `categories.json`)
+- `--min-cluster-size`: Minimum articles per category (default: 2)
+- `--similarity-threshold`: Cosine similarity threshold for grouping (default: 0.75)
+- `--persist-dir`: ChromaDB storage directory (default: `./chroma_db`)
+
+---
+
+## Error Handling
+
+Implement handling for:
+- File not found or permission errors
+- Malformed TSV data (missing columns, empty titles)
+- ChromaDB connection failures
+- Embedding model download failures
+- Empty or single-article input files
+
+Log errors with appropriate severity levels using Python's `logging` module.
+
+---
+
+## Additional Requirements
+
+1. Add docstrings to all functions following Google style
+2. Include type hints for all function parameters and return values
+3. Write a `requirements.txt` file with pinned versions
+4. Include a `README.md` with setup and usage instructions
+5. Add unit tests for the file parsing and clustering functions
+
+---
+
+## Deliverables
+
+Provide:
+1. Complete, runnable Python code for all modules
+2. Example usage with sample data
+3. Explanation of the clustering approach and parameter choices
+4. Instructions for adjusting similarity thresholds for different use cases

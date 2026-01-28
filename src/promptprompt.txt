@@ -1,0 +1,2 @@
+Create a prompt for an LLM to design a program that takes a tab delimited file with news article ids and titles and uses chroma for vector search to group the articles into categories.
+Make the instructions specific.
