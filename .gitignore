@@ -1,3 +1,5 @@
+.DS_Store
+src/chroma_db/
 __pycache__
 .autoenv
 .autoenv.leave
