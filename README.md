@@ -93,5 +93,4 @@ But no, for some reason it worked on my machine, but, like a good little geek I 
 The error is caused by ChromaDB's delete_collection() throwing a NotFoundError (instead of ValueError) when the collection doesn't exist. The code only catches ValueError, so the exception isn't handled properly.
 ```
 
-The chroma db collection was trying to get deleted and throwing a value error so added notfound error.
 Look at git log for chroma_manager.py for changes.
