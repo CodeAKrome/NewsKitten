@@ -1,3 +1,4 @@
+![Cat shred img](newskit.png)
 ![Cat shred](https://github.com/user-attachments/assets/36ea343e-1734-44c3-9d56-d9d932526cf9)
 
 # Vibe coding process
