@@ -1,0 +1,47 @@
+{
+  "name": "newskit-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for intelligent news article categorization using embeddings and clustering",
+  "main": "build/index.js",
+  "type": "module",
+  "bin": {
+    "newskit-mcp-server": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "dev": "ts-node --esm src/index.ts",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "news",
+    "categorization",
+    "clustering",
+    "embeddings",
+    "nlp",
+    "machine-learning"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeAKrome/newskit-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CodeAKrome/newskit-mcp-server/issues"
+  },
+  "homepage": "https://github.com/CodeAKrome/newskit-mcp-server#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
